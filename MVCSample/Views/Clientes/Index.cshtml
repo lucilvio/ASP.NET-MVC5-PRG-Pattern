@@ -1,0 +1,58 @@
+﻿@using System.Activities.Statements
+@using GridMvc.Html
+@using MVCSample.Models
+@model IEnumerable<MVCSample.Models.Cliente>
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Subtitle = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">  Lista de Clientes </div>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <span class="glyphicon glyphicon-search">  </span>
+            Filtro
+        </div>
+
+
+        @using (Html.BeginForm("Filtrar", "Clientes", null, FormMethod.Get))
+        {
+            <div class="form-group form-inline">
+                <label for="nome"> Nome </label>
+                <input id="nome" name="nome" type="text" class="form-control" />
+                <button type="submit" class="btn btn-default"> Filtrar </button>
+            </div>
+        }
+
+        <hr />
+
+        <div class="form-group">
+            @Html.Grid(Model).Columns(column =>
+            {
+                column.Add(cliente => cliente.Nome).SetWidth(100);
+                column.Add(cliente => cliente.Sobrenome).SetWidth(250);
+                column.Add(cliente => cliente.Idade).SetWidth(10);
+                column.Add().SetWidth(30).Encoded(false).Sanitized(false).RenderValueAs(c => @Html.ActionLink("Editar", "Alterar", new { id = c.Id }, null));
+                column.Add().SetWidth(30).Encoded(false).Sanitized(false).RenderValueAs(c => @Ajax.ActionLink("Excluir", "Excluir", new { id = c.Id }, new AjaxOptions()
+                {
+                    HttpMethod = "Delete",
+                    Confirm = "Tem certeza que deseja excluir esse cliente?",
+                    OnSuccess = "$(this).parent().parent().remove();"
+                }));
+            }).WithPaging(8).Sortable()
+        </div>
+        <br />
+        <div class="form-group modal-footer">
+            @Html.ActionLink("Adicionar Novo Cliente", "Adicionar", "Clientes", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Voltar", "Voltar", "Voltar", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>
+
+
+
+

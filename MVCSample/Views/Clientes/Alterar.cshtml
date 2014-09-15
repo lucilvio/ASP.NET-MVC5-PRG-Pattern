@@ -1,0 +1,40 @@
+﻿@model MVCSample.Models.Cliente
+
+@{
+    ViewBag.Title = "Alterar Cliente";
+    ViewBag.Subtitle = "Alterar Cliente - " + Model.NomeCompleto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Alterar", "Clientes", FormMethod.Post, new { @class = "form-horizontal", style = "padding-left: 15px;" }))
+{
+    Html.RenderPartial("_MensagensDeErro", ViewData.ModelState);
+    
+    @Html.HiddenFor(m => m.Id)
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nome)
+        @Html.TextBoxFor(m => m.Nome,  new { @class = "form-control", placeholder = "Nome" })
+
+        @Html.ValidationMessageFor(m => m.Nome)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sobrenome)
+        @Html.TextBoxFor(m => m.Sobrenome, new { @class = "form-control", placeholder = "SobreNome" })
+
+        @Html.ValidationMessageFor(m => m.Sobrenome)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Idade)
+        @Html.TextBoxFor(m => m.Idade, new { @class = "form-control", type = "number", placeholder = "Idade" })
+
+        @Html.ValidationMessageFor(m => m.Idade)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Alterar" class="btn btn-primary" />
+    </div>
+}
+
